@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from part02.models import Comment
+from .forms import LoginForm
 from .models import Note, Section, User
 
 
@@ -16,20 +17,17 @@ def home(request):
 
 
 def login(request):
-	"""点评区登录"""
-	username = request.POST['username']
-	password = request.POST['password']
-	user = auth.authenticate(request, username=username, password=password)
-	referer = request.META.get('HTTP_REFERER', reverse('home'))
-	if user is not None:
-		auth.login(request, user)
-		return redirect(referer)
+	context = {}
+	if request.method == 'POST':
+		login_form = LoginForm(request.POST)
+		if login_form.is_valid():
+			user = login_form.cleaned_data['user']
+			auth.login(request, user)
+			return redirect(request.GET.get('from', reverse('home')))
 	else:
-		return render(request, 'error.html', {'message': "用户名或密码不正确！"})
-
-
-def login_ui(request):
-	return render(request, 'login.html')
+		login_form = LoginForm()
+	context['login_form'] = login_form
+	return render(request, 'login.html', context)
 
 
 def login4ui(request):
@@ -43,15 +41,17 @@ def login4ui(request):
 	else:
 		return render(request, 'login.html', {'message': "用户名或密码不正确！"})
 
+
 def logout(request):
 	username = request.POST['username']
 	password = request.POST['password']
 	user = auth.authenticate(request, username=username, password=password)
 	if user is not None and user.is_active:
-		auth.logout(request,user)
-		return render(request,'login.html')
+		auth.logout(request, user)
+		return render(request, 'login.html')
 	else:
 		pass
+
 
 def note_list(request):
 	notes_all_list = Note.objects.all()

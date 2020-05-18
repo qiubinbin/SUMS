@@ -5,7 +5,6 @@ from part01 import views
 urlpatterns = [
 	re_path('home/', views.home, name='home'),
 	re_path('login/', views.login, name='login'),
-	re_path('login_ui/', views.login_ui, name='login_ui'),
 	re_path('login4ui/', views.login4ui, name='login4ui'),
 	re_path('logout/',views.logout,name='logout'),
 	re_path('note_list/', views.note_list, name='note_list'),

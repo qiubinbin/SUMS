@@ -1,11 +1,12 @@
 body{
     background: url("../images/bgpic.png");
 }
-.form-horizontal{
+.card{
     background: rgba(255,255,255,0.3);
     padding-bottom: 40px;
-    border-radius: 15px;
+    border-radius: 11px;
     text-align: center;
+    margin-top:70%;
 }
 .form-horizontal .heading{
     display: block;
@@ -46,18 +47,6 @@ body{
 }
 .form-horizontal .form-control:focus + i{
     color: #00b4ef;
-}
-.form-horizontal .fa-question-circle{
-    display: inline-block;
-    position: absolute;
-    top: 12px;
-    right: 60px;
-    font-size: 20px;
-    color: #808080;
-    transition: all 0.5s ease 0s;
-}
-.form-horizontal .fa-question-circle:hover{
-    color: #000;
 }
 .form-horizontal .main-checkbox{
     float: left;
@@ -117,15 +106,4 @@ body{
     text-transform: capitalize;
     transition: all 0.5s ease 0s;
     height:30px;
-}
-@media only screen and (max-width: 479px){
-    .form-horizontal .form-group{
-        padding: 0 25px;
-    }
-    .form-horizontal .form-group i{
-        left: 45px;
-    }
-    .form-horizontal .btn{
-        padding: 10px 20px;
-    }
 }

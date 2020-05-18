@@ -16,6 +16,7 @@ def home(request):
 
 
 def login(request):
+	"""点评区登录"""
 	username = request.POST['username']
 	password = request.POST['password']
 	user = auth.authenticate(request, username=username, password=password)
@@ -26,6 +27,31 @@ def login(request):
 	else:
 		return render(request, 'error.html', {'message': "用户名或密码不正确！"})
 
+
+def login_ui(request):
+	return render(request, 'login.html')
+
+
+def login4ui(request):
+	"""界面登录"""
+	username = request.POST['username']
+	password = request.POST['password']
+	user = auth.authenticate(request, username=username, password=password)
+	if user is not None:
+		auth.login(request, user)
+		return render(request, 'home.html')
+	else:
+		return render(request, 'login.html', {'message': "用户名或密码不正确！"})
+
+def logout(request):
+	username = request.POST['username']
+	password = request.POST['password']
+	user = auth.authenticate(request, username=username, password=password)
+	if user is not None and user.is_active:
+		auth.logout(request,user)
+		return render(request,'login.html')
+	else:
+		pass
 
 def note_list(request):
 	notes_all_list = Note.objects.all()

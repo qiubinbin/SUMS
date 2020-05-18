@@ -1,0 +1,117 @@
+{% extends 'base.html'  %}
+{% block title %}
+{{ note.title }}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-10">
+            <div class="card">
+                <h3>{{ note.title }}</h3>
+                <p>{{ note.content|safe }}</p>
+                <p>负责人：{{ note.author }}</p>
+                <p>升级时间：{{ note.time|date:"Y-m-d" }}</p>
+                <p>
+                    <svg class="bi bi-tag-fill" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd"
+                              d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
+                              fill-rule="evenodd"/>
+                    </svg>
+                    <a href="{% url 'notes_with_section' note.author.section.pk %}">{{ note.author.section }}</a></p>
+                <p>附件：<a download="{{ note.annex }}" href="{{note.annex.upload_to }}">{{ note.annex }}</a></p>
+            </div>
+            <div class="card">
+                <p>上一篇：
+                    {% if previous_note %}
+                    <a href="{% url 'note_detail' previous_note.pk %}">{{ previous_note.title }}</a>
+                    {% else %}
+                    没有了
+                    {% endif %}
+                </p>
+                <p>下一篇：
+                    {% if next_note %}
+                    <a href="{% url 'note_detail' next_note.pk %}">{{ next_note.title }}</a>
+                    {% else %}
+                    没有了
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="col-xl-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">升级分类</h5>
+                    <ul class="fa-ul card-text" style="margin-left: 0;">
+                        {% for note_section in note_sections %}
+                        <li><i class="fa fa-tag"><a href="{% url 'notes_with_section' note_section.pk %}"
+                                                    style="font-size:13px;">&nbsp;{{ note_section.section }}</a></i>
+                        </li>
+                        {% empty %}
+                        <li>暂无分类！</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">日期归档</h5>
+                    <ul class="fa-ul card-text" style="margin-left: 0;">
+                        {% for note_date in note_dates %}
+                        <li><i class="fa fa-clock-o"><a
+                                href="{% url 'notes_with_time' note_date.year note_date.month %}"
+                                style="font-size:13px;">&nbsp;{{ note_date|date:"Y年m月" }}</a></i>
+                        </li>
+                        {% empty %}
+                        <li>暂无分类！</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-xl-10">
+        <div class="comment-area">
+            <h3 class="comment-area-title">提交审批</h3>
+            {% if user.is_authenticated %}
+            {{ user.username }}已登录
+            <form action="{% url 'submit_comment' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <textarea id="commen_text" name="text"></textarea>
+                    <input name="object_id" type="hidden" value="{{ note.pk }}">
+                    <input name="content_type" type="hidden" value="note">
+                    <button type="submit" value="评论">发布</button>
+                </div>
+            </form>
+            {% else %}
+            未登录，登录方可审批
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input class="form-control" name="username" placeholder="用户名" type="text">
+                    <input class="form-control" name="password" placeholder="密码" type="text">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="submit">登录</button>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+        <div class="comment-area">
+            <h3 class="comment-area-title">历史记录</h3>
+            {% for comment in comments%}
+            <div>
+                {{ comment.user.username }}
+                ({{ comment.comment_time|date:"Y-m-d H:n:s" }})
+                {{ comment.content }}
+            </div>
+            {% empty %}
+            暂无记录！
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

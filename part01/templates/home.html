@@ -1,0 +1,36 @@
+{% extends 'base.html'  %}
+{% block title %}
+首页
+{% endblock %}
+{% block content %}
+<div class="jumbotron text-center">
+    <h1>软件升级管理系统</h1>
+    <p>
+        <script type="text/javascript">
+         var date = new Date();
+         document.write(date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " 星期" + "日一二三四五六".charAt(date.getDay()));
+
+
+        </script>
+    </p>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xl-4">
+            <h3>自动化</h3>
+            <p>#</p>
+            <p>#</p>
+        </div>
+        <div class="col-xl-4">
+            <h3>通号维保</h3>
+            <p>#</p>
+            <p>#</p>
+        </div>
+        <div class="col-xl-4">
+            <h3>行车维保</h3>
+            <p>#</p>
+            <p>#</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

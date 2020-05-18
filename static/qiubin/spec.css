@@ -1,0 +1,20 @@
+body{
+    background-color:#F5F6F7;
+}
+.nav-link{
+    color:black;
+}
+.card{
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    margin:15px;
+    background-color:#FAFAFA;
+    }
+div.comment-area{
+    margin-top:2em;
+    }
+h3.comment-area-title{
+    border-bottom:1px solid #ccc;
+    padding-bottom:0.4em;
+    }

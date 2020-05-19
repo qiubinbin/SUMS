@@ -1,16 +1,16 @@
 # Create your views here.
-from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+from .forms import CommentForm
 from .models import Comment
 
 
 def submit_comment(request):
-	referer = request.META.get('HTTP_REFERER', reverse('home'))
+	'''referer = request.META.get('HTTP_REFERER', reverse('home'))
 	if not request.user.is_authenticated:
 		return render(request, 'error.html', {'message': '用户未登录！', 'redirect_to': referer})
-	content = request.POST.get('text', '').strip()
+	content = request.POST.get('content', '').strip()
 	if not content:
 		return render(request, 'error.html', {'message': '意见为空！', 'redirect_to': referer})
 	try:
@@ -28,4 +28,15 @@ def submit_comment(request):
 	comment.content_object = model_obj
 	comment.save()
 	print(referer)
-	return redirect(referer)
+	return redirect(referer)'''
+	referer = request.META.get('HTTP_REFERER', reverse('home'))
+	comment_form = CommentForm(request.POST, user=request.user)
+	if comment_form.is_valid():
+		comment = Comment()
+		comment.user = comment_form.cleaned_data['user']
+		comment.content = comment_form.cleaned_data['content']
+		comment.content_object = comment_form.cleaned_data['content_object']
+		comment.save()
+		return redirect(referer)
+	else:
+		return render(request, 'error.html', {'message': comment_form.errors, 'redirect_to': referer})

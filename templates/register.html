@@ -1,0 +1,38 @@
+{% load static %}<!--使用static-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="{% static 'qiubin/login.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <center>
+        <div class="col-xl-4"
+        ">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="">
+                    <h4 class="card-title text-center" style="color:white;margin-bottom:40px;">软件升级管理系统</h4>
+                    {% csrf_token %}
+                    {% for field in reg_form %}
+                    <!--                            <label for="{{ field.id_for_label }}" style="color:white;float:left">{{field.label }}</label>-->
+                    {{ field }}
+                    <p class="text-danger">{{ field.errors.as_text }}</p>
+                    {% endfor %}
+                    <span class="pull-left text-danger">{{ reg_form.non_field_errors }}</span>
+                    <button type="submit" class="btn btn-success pull-right">注册</button>
+                </form>
+            </div>
+        </div>
+</div>
+</center>
+
+</div>
+</body>
+</html>

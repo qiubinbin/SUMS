@@ -77,17 +77,16 @@
             <h3 class="comment-area-title">提交审批</h3>
             {% if user.is_authenticated %}
             <form action="{% url 'submit_comment' %}" method="post" style="overflow:hidden;">{# overflow:hidden form到父级#}
+                <label>{{ user.username }}已登录</label>
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="comment_text">{{ user.username }}已登录</label>
-                    <textarea id="comment_text" name="text" class="form-control" rows="4"></textarea>
-                </div>
-                <input name="object_id" type="hidden" value="{{ note.pk }}">
-                <input name="content_type" type="hidden" value="note">
+                {{ comment_form }}
                 <button type="submit" value="评论" class="btn btn-success" style="float:right;">发布</button>
             </form>
             {% else %}
-            未登录，登录方可审批<a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+            未登录，登录方可审批
+            <a class="btn btn-success" href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+            <span>或</span>
+             <a class="btn btn-danger" href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
             {% endif %}
         </div>
         <div class="comment-area">

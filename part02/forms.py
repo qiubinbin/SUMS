@@ -1,12 +1,12 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import ObjectDoesNotExist
-
+from ckeditor.widgets import CKEditorWidget
 
 class CommentForm(forms.Form):
 	content_type = forms.CharField(widget=forms.HiddenInput)
 	object_id = forms.IntegerField(widget=forms.HiddenInput)
-	content = forms.CharField(widget=forms.Textarea)
+	content = forms.CharField(widget=CKEditorWidget())
 
 	def __init__(self, *args, **kwargs):
 		if 'user' in kwargs:

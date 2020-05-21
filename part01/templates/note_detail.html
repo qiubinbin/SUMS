@@ -1,7 +1,12 @@
 {% extends 'base.html'  %}
+{% load static %}<!--使用static-->
 {% block title %}
 {{ note.title }}
 {% endblock %}
+{% block head_extend %}
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+{% endblock head_extend %}
 {% block content %}
 <div class="container">
     <div class="row">
@@ -76,31 +81,76 @@
         <div class="comment-area">
             <h3 class="comment-area-title">提交审批</h3>
             {% if user.is_authenticated %}
-            <form action="{% url 'submit_comment' %}" method="post" style="overflow:hidden;">{# overflow:hidden form到父级#}
-                <label>{{ user.username }}已登录</label>
-                {% csrf_token %}
-                {{ comment_form }}
-                <button type="submit" value="评论" class="btn btn-success" style="float:right;">发布</button>
-            </form>
+                <form id="comment_form" action="{% url 'submit_comment' %}" method="post" style="overflow:hidden;">{# overflow:hidden form到父级#}
+                    <label>{{ user.username }}已登录</label>
+                    {% csrf_token %}
+                    {% for field in comment_form %}
+                        {{ field }}
+                    {% endfor %}
+                    <span id="comment_error" class="text-danger pull-left"></span>
+                    <input type="submit" value="发布" class="btn btn-primary pull-right">
+                </form>
             {% else %}
-            未登录，登录方可审批
-            <a class="btn btn-success" href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
-            <span>或</span>
-             <a class="btn btn-danger" href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
+                未登录，登录方可审批
+                <a class="btn btn-success" href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+                <span>或</span>
+                 <a class="btn btn-danger" href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
             {% endif %}
         </div>
         <div class="comment-area">
             <h3 class="comment-area-title">历史记录</h3>
-            {% for comment in comments%}
-            <div>
+            <div id="comment_list">
+                {% for comment in comments%}
+                <div>
                 {{ comment.user.username }}
-                ({{ comment.comment_time|date:"Y-m-d H:n:s" }})
-                {{ comment.content }}
+                ({{ comment.comment_time|date:"Y-m-d H:i:s" }})
+                {{ comment.content|safe }}
+                </div>
+                {% empty %}
+                暂无记录！
+                {% endfor %}
             </div>
-            {% empty %}
-            暂无记录！
-            {% endfor %}
         </div>
     </div>
 </div>
+{% endblock %}
+{% block script_extends %}
+<!--ajax代码,异步提交-->
+<script type="text/javascript">
+    $("#comment_form").submit(function(){
+        //判断是否为空
+        $("#comment_error").text('');
+        if (CKEDITOR.instances['id_content'].document.getBody().getText().trim()==''){
+            //错误信息
+            $("#comment_error").text('审批意见不能为空！');
+            return false;
+        }
+        //数据更新到textarea
+        CKEDITOR.instances['id_content'].updateElement();
+        //异步提交
+        $.ajax({
+            url:"{% url 'submit_comment' %}",
+            type:"POST",
+            data:$(this).serialize(),
+            cache:false,
+            success:function(data){
+                console.log(data);
+                //插入数据
+                if (data['status']=="SUCCESS"){
+                var comment_html='<div>'+data['username']+'('+data['comment_time']+'):'+data['content']+'</div>';
+                $("#comment_list").prepend(comment_html);
+                //清空编辑框内容
+                CKEDITOR.instances['id_content'].setData('');
+                }else{
+                    //错误信息
+                    $("#comment_error").text(data['message']);
+                }
+            },
+            error:function(xhr){
+                console.log(xhr);
+            }
+        });
+        return false;
+    });
+</script>
 {% endblock %}

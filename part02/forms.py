@@ -1,12 +1,14 @@
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import ObjectDoesNotExist
-from ckeditor.widgets import CKEditorWidget
+
 
 class CommentForm(forms.Form):
 	content_type = forms.CharField(widget=forms.HiddenInput)
 	object_id = forms.IntegerField(widget=forms.HiddenInput)
-	content = forms.CharField(widget=CKEditorWidget())
+	content = forms.CharField(widget=CKEditorWidget(config_name='comment_ckeditor'),
+	                          error_messages={'required':'审批意见不能为空！',})
 
 	def __init__(self, *args, **kwargs):
 		if 'user' in kwargs:

@@ -83,12 +83,16 @@
             {% if user.is_authenticated %}
                 <form id="comment_form" action="{% url 'submit_comment' %}" method="post" style="overflow:hidden;">{# overflow:hidden form到父级#}
                     <label>{{ user.username }}已登录</label>
+                    <div id="reply_content_container" style="display: none;">
+                    	<p>回复：</p>
+                    	<div id="reply_content"></div>
+                    </div>
                     {% csrf_token %}
                     {% for field in comment_form %}
                         {{ field }}
                     {% endfor %}
                     <span id="comment_error" class="text-danger pull-left"></span>
-                    <input type="submit" value="发布" class="btn btn-primary pull-right">
+                    <input type="submit" value="发布" class="btn btn-primary btn-sm pull-right">
                 </form>
             {% else %}
                 未登录，登录方可审批
@@ -101,19 +105,35 @@
             <h3 class="comment-area-title">历史记录</h3>
             <div id="comment_list">
                 {% for comment in comments%}
-                <div>
-                {{ comment.user.username }}
-                ({{ comment.comment_time|date:"Y-m-d H:i:s" }})
-                {{ comment.content|safe }}
+                <div id="root_{{ comment.pk }}" class="comment">
+                    <span>{{ comment.user.username }}</span>
+                    <span>({{ comment.comment_time|date:"Y-m-d H:i:s" }})</span>
+                <div id="comment_{{ comment.pk }}">
+                	{{ comment.content|safe }}
+                </div>
+                <a href="javascript:reply({{ comment.pk }})">回复</a>
+                {% for reply in comment.root_comment.all %}
+                    <div class="reply">
+                        <span>{{ reply.user.username }}</span>
+                        <span>({{ reply.comment_time|date:"Y-m-d H:i:s" }})</span>
+                        <span> 回复 </span>
+                        <span>{{ reply.parent_name.username }}:</span>
+                        <div id="comment_{{ reply.pk }}">
+		                	{{ reply.content|safe }}
+		                </div>
+                        <a href="javascript:reply({{ reply.pk }})"> 回复 </a>
+                    </div>
+                {% endfor %}
                 </div>
                 {% empty %}
-                暂无记录！
+                <span id="no_comment">暂无记录!</span>
                 {% endfor %}
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+
 {% block script_extends %}
 <!--ajax代码,异步提交-->
 <script type="text/javascript">
@@ -137,20 +157,39 @@
                 console.log(data);
                 //插入数据
                 if (data['status']=="SUCCESS"){
-                var comment_html='<div>'+data['username']+'('+data['comment_time']+'):'+data['content']+'</div>';
-                $("#comment_list").prepend(comment_html);
-                //清空编辑框内容
-                CKEDITOR.instances['id_content'].setData('');
+                    if($("#reply_comment_id").val()=='0'){
+                        //插入审批意见
+                        var comment_html='<div id="root_'+data['pk']+'" class="comment"><span>'+data['username']+'</span><span>('+data['comment_time']+'):</span><div id="comment_'+data['pk']+'">'+data['content']+'</div><a href="javascript:reply('+data['pk']+')">回复</a></div>';
+                        $("#comment_list").prepend(comment_html);
+                    }else{
+                        //插入回复
+                        var reply_html='<div class="reply"><span>'+data['username']+'</span><span>('+data['comment_time']+')</span><span> 回复 </span><span>'+data['parent']+'</span><div id="comment_'+data['pk']+'">'+data['content']+'</div><a href="javascript:reply('+data['pk']+')">回复</a></div>';
+                        $("#root_"+data['root_pk']).append(reply_html);
+                    }
+                    //清空编辑框内容
+                    CKEDITOR.instances['id_content'].setData('');
+                    $("#reply_content_container").hide();
+                    $("#reply_comment_id").val('0');
+                    $("#no_comment").remove();
                 }else{
                     //错误信息
                     $("#comment_error").text(data['message']);
-                }
+                    }
             },
             error:function(xhr){
                 console.log(xhr);
-            }
+            },
         });
         return false;
     });
+    function reply(reply_comment_id){
+    	$("#reply_comment_id").val(reply_comment_id);
+    	var html=$("#comment_"+reply_comment_id).html();
+    	$("#reply_content").html(html);
+    	$("#reply_content_container").show();
+    	$("html").animate({scrollTop:$("#comment_form").offset().top - 60},300,function(){
+    		CKEDITOR.instances["id_content"].focus();
+    	});
+    }
 </script>
 {% endblock %}

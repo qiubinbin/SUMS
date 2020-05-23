@@ -104,14 +104,15 @@ def note_detail(request, note_id):
 	context = {}
 	note = get_object_or_404(models.Note, id=note_id)
 	note_content_type = ContentType.objects.get_for_model(note)
-	comments = Comment.objects.filter(content_type=note_content_type, object_id=note.pk)
+	comments = Comment.objects.filter(content_type=note_content_type, object_id=note.pk, parent=None)
 	context['note'] = note
 	context['previous_note'] = models.Note.objects.filter(time__gt=note.time).last()  # 前一条
 	context['next_note'] = models.Note.objects.filter(time__lt=note.time).first()  # 后一条
 	context['note_sections'] = models.Section.objects.all()
 	context['note_dates'] = models.Note.objects.dates('time', 'month', order='DESC')
-	context['comments'] = comments
-	context['comment_form'] = CommentForm(initial={'content_type': note_content_type.model, 'object_id': note_id})
+	context['comments'] = comments.order_by('-comment_time')
+	context['comment_form'] = CommentForm(
+		initial={'content_type': note_content_type.model, 'object_id': note_id, 'reply_comment_id': 0})
 	return render(request, 'note_detail.html', context)
 
 

@@ -37,14 +37,26 @@ def submit_comment(request):
 		comment.user = comment_form.cleaned_data['user']
 		comment.content = comment_form.cleaned_data['content']
 		comment.content_object = comment_form.cleaned_data['content_object']
+		parent = comment_form.cleaned_data['parent']
+		if parent:
+			comment.root = parent.root if parent.root else parent
+			comment.parent = parent
+			comment.parent_name = parent.user
 		comment.save()
 		# 返回数据
 		data['status'] = 'SUCCESS'
-		data['username']=comment.user.username
-		data['comment_time']=comment.comment_time.strftime('%Y-%m-%d %H:%M:%S')
-		data['content']=comment.content
+		data['username'] = comment.user.username
+		data['comment_time'] = comment.comment_time.strftime('%Y-%m-%d %H:%M:%S')
+		data['content'] = comment.content
+		if parent:
+			data['parent_name'] = comment.parent_name.username
+		else:
+			data['parent_name'] = ''
+		data['pk'] = comment.pk
+		data['root_pk']=comment.root.pk if comment.root else ''
+
 	else:
 		# return render(request, 'error.html', {'message': comment_form.errors, 'redirect_to': referer})
 		data['status'] = 'ERROR'
-		data['message']=list(comment_form.errors.values())[0]
+		data['message'] = list(comment_form.errors.values())[0]
 	return JsonResponse(data)

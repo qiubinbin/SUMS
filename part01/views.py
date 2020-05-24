@@ -45,14 +45,9 @@ def login4ui(request):
 
 
 def logout(request):
-	username = request.POST['username']
-	password = request.POST['password']
-	user = auth.authenticate(request, username=username, password=password)
-	if user is not None and user.is_active:
-		auth.logout(request, user)
-		return render(request, 'home.html')
-	else:
-		pass
+	"""登出"""
+	auth.logout(request)
+	return redirect(request.GET.get('from', reverse('home')))
 
 
 def register(request):

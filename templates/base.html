@@ -46,10 +46,10 @@
     <ul class="navbar-nav  mt-lg-0">
         {% if user.is_authenticated %}
             <li class="nav-item dropdown" >
-                <a class="nav-link dropdown-toggl" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{% url 'logout' %}">退出</a>
-                  <a class="dropdown-item" href="#">预留</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="padding:none">
+                  <a class="dropdown-item" href="{% url 'logout' %}?from={{ request.get_full_path }}">退出</a>
+<!--                  <a class="dropdown-item" href="#">预留</a>-->
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">设置</a>
                 </div>

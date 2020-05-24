@@ -163,7 +163,7 @@
                         $("#comment_list").prepend(comment_html);
                     }else{
                         //插入回复
-                        var reply_html='<div class="reply"><span>'+data['username']+'</span><span>('+data['comment_time']+')</span><span> 回复 </span><span>'+data['parent']+'</span><div id="comment_'+data['pk']+'">'+data['content']+'</div><a href="javascript:reply('+data['pk']+')">回复</a></div>';
+                        var reply_html='<div class="reply"><span>'+data['username']+'</span><span>('+data['comment_time']+')</span><span> 回复 </span><span>'+data['parent_name']+'</span><div id="comment_'+data['pk']+'">'+data['content']+'</div><a href="javascript:reply('+data['pk']+')">回复</a></div>';
                         $("#root_"+data['root_pk']).append(reply_html);
                     }
                     //清空编辑框内容

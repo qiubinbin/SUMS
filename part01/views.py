@@ -50,7 +50,7 @@ def logout(request):
 	user = auth.authenticate(request, username=username, password=password)
 	if user is not None and user.is_active:
 		auth.logout(request, user)
-		return render(request, 'login.html')
+		return render(request, 'home.html')
 	else:
 		pass
 

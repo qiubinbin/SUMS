@@ -178,3 +178,8 @@ def new_note(request):
 	new_note.save()
 	referer = request.META.get('HTTP_REFERER', reverse('home'))
 	return redirect(referer)
+
+
+def user_info(request):
+	context = {}
+	return render(request, 'user_info.html', context)

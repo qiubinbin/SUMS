@@ -20,34 +20,24 @@
                 <form method="post" action="">
                     <h4 class="card-title text-center" style="color:white;margin-bottom:40px;">软件升级管理系统</h4>
                     {% csrf_token %}
-                    {% for field in login_form %}
-                    <!--                            <label for="{{ field.id_for_label }}" style="color:white;float:left">{{field.label }}</label>-->
-                    {{ field }}
-                    <p class="text-danger">{{ field.errors.as_text }}</p>
-                    {% endfor %}
+<!--                    {% for field in login_form %}-->
+<!--                    {{ field }}-->
+<!--                    <p class="text-danger">{{ field.errors.as_text }}</p>-->
+<!--                    {% endfor %}-->
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><li class="fa fa-user"></li></span>
+                      </div>
+                      <input name="username" type="text" class="form-control" placeholder="用户名" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2"><li class="fa fa-lock"></li></span>
+                        </div>
+                      <input name="password" type="password" class="form-control" placeholder="密码" aria-label="Password" aria-describedby="basic-addon2">
+                    </div>
                     <span class="pull-left text-danger">{{ login_form.non_field_errors }}</span>
                     <button type="submit" class="btn btn-success pull-right">登录</button>
-                    <!--                        <form class="form-horizontal" method="post" action="{% url 'login4ui' %}">-->
-                    <!--                            {% csrf_token %}-->
-                    <!--                            <div class="form-group">-->
-                    <!--                                <input type="text" class="form-control" id="id_username" name="username"-->
-                    <!--                                       value="{{username}}" placeholder="用户名">-->
-                    <!--                                <i class="fa fa-user"></i>-->
-                    <!--                            </div>-->
-                    <!--                            <div class="form-group">-->
-                    <!--                                <input type="password" class="form-control" id="id_password" name="password"-->
-                    <!--                                       value="{{password}}" placeholder="密　码">-->
-                    <!--                                <i class="fa fa-lock"></i>-->
-                    <!--                            </div>-->
-                    <!--                            <div class="form-group">-->
-                    <!--                                <div class="main-checkbox">-->
-                    <!--                                    <input id="checkbox1" name="check" type="checkbox" value="1"/>-->
-                    <!--                                    <label for="checkbox1"></label>-->
-                    <!--                                </div>-->
-                    <!--                                <span class="text">记住我</span>-->
-                    <!--                                <button class="btn btn-default" type="submit">登录</button>-->
-                    <!--                            </div>-->
-                    <!--                        </form>-->
                 </form>
             </div>
         </div>

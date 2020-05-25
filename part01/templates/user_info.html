@@ -1,0 +1,27 @@
+{% extends 'base.html'  %}
+{% block title %}
+设置
+{% endblock %}
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-10 col-xl-offset-1">
+				{% if user.is_authenticated %}
+					<h2>{{ user.username }}</h2>
+					<ul class="fa-ul">
+						<li>用户名：<a href="#">修改用户名</a></li>
+						<li>邮箱：{% if user.email %}{{ user.email }}{% else %}未设置邮箱{% endif %}
+							<a href="#">设置邮箱</a></li>
+						<li>上次登录时间：{{ user.last_login|date:"Y-m-d H:i:s" }}</li>
+						<li><a href="#">修改密码</a></li>
+					</ul>
+				{% else %}
+					<span>未登录，跳转到页面...</span>
+					<script type="text/javascript">
+						window.location.href='/';
+					</script>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

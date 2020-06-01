@@ -31,14 +31,15 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'part01',
-	'part02',
+	'note',
+	'flow',
+	'user',
 ]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'user.User'  # userapp中的自定义User
 # Application definition
 
 

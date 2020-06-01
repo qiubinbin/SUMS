@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib import auth
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()  # 非外键
 
 
 class LoginForm(forms.Form):
@@ -53,3 +55,6 @@ class RegForm(forms.Form):
 		if password != password_again:
 			raise forms.ValidationError('两次密码不一致!')
 		return password_again
+
+class ChangAlias(forms.Form):
+	username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入用户名'}))

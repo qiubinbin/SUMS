@@ -4,7 +4,7 @@ from django.contrib import admin
 from . import models
 
 
-@admin.register(models.User)
+@admin.register(models.Principal)
 class NoteTypeAdmin(admin.ModelAdmin):
 	list_display = ('name', 'section', 'c_time')
 

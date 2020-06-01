@@ -1,0 +1,62 @@
+{% load static %}<!--使用static-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="{% static 'qiubin/login.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <center>
+        <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="">
+                    <h4 class="card-title text-center" style="color:white;margin-bottom:40px;">软件升级管理系统</h4>
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><li class="fa fa-user fa-lg fa-fw"></li></span>
+                          </div>
+                          <input name="username" type="text" class="form-control" placeholder="用户名" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2"><li class="fa fa-lock fa-lg fa-fw"></li></span>
+                        </div>
+                      <input name="password" type="password" class="form-control" placeholder="密码" aria-label="Password" aria-describedby="basic-addon2">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3"><li class="fa fa-lock fa-lg fa-fw"></li></span>
+                        </div>
+                      <input name="password_again" type="password" class="form-control" placeholder="再次输入密码" aria-label="Password" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon4"><li class="fa fa-inbox fa-lg fa-fw"></li></span>
+                        </div>
+                      <input name="email" type="email" class="form-control" placeholder="邮箱" aria-label="Password" aria-describedby="basic-addon4">
+                    </div>
+                    <span class="pull-left text-danger">{{ reg_form.non_field_errors }}</span>
+                    <div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">
+                      <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <a class="btn btn-warning" href="{% url 'login' %}" data-toggle="tooltip" data-placement="left" title="已有账户，直接登陆！">登录</a>
+                      </div>
+                      <div class="btn-group" role="group" aria-label="Third group">
+                        <button type="submit" class="btn btn-success ">注册</button>
+                      </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </center>
+</div>
+</body>
+</html>

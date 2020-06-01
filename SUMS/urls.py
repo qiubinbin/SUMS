@@ -18,14 +18,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from part01.views import home
+from note.views import home
 
 urlpatterns = [
 	path('', home, name='home'),
 	path('admin/', admin.site.urls),
 	path('ckeditor/', include('ckeditor_uploader.urls')),
-	path('part01/', include('part01.urls')),
-	path('part02/', include('part02.urls')),
+	path('note/', include('note.urls')),
+	path('flow/', include('flow.urls')),
+	path('user/',include('user.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

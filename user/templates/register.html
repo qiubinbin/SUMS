@@ -17,8 +17,8 @@
         <div class="card">
             <div class="card-body">
                 <form method="post" action="">
-                    <h4 class="card-title text-center" style="color:white;margin-bottom:40px;">软件升级管理系统</h4>
                     {% csrf_token %}
+                    <h4 class="card-title text-center" style="color:white;margin-bottom:40px;">软件升级管理系统</h4>
                     <div class="input-group mb-3">
                           <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"><li class="fa fa-user fa-lg fa-fw"></li></span>
@@ -29,13 +29,13 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon2"><li class="fa fa-lock fa-lg fa-fw"></li></span>
                         </div>
-                      <input name="password" type="password" class="form-control" placeholder="密码" aria-label="Password" aria-describedby="basic-addon2">
+                      <input name="password" type="password" class="form-control" placeholder="密码"  aria-describedby="basic-addon2">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3"><li class="fa fa-lock fa-lg fa-fw"></li></span>
                         </div>
-                      <input name="password_again" type="password" class="form-control" placeholder="再次输入密码" aria-label="Password" aria-describedby="basic-addon3">
+                      <input name="password_again" type="password" class="form-control" placeholder="再次输入密码"  aria-describedby="basic-addon3">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -43,7 +43,6 @@
                         </div>
                       <input name="email" type="email" class="form-control" placeholder="邮箱" aria-label="Password" aria-describedby="basic-addon4">
                     </div>
-                    <span class="pull-left text-danger">{{ reg_form.non_field_errors }}</span>
                     <div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">
                       <div class="btn-group mr-2" role="group" aria-label="Second group">
                         <a class="btn btn-warning" href="{% url 'login' %}" data-toggle="tooltip" data-placement="left" title="已有账户，直接登陆！">登录</a>
@@ -52,6 +51,15 @@
                         <button type="submit" class="btn btn-success ">注册</button>
                       </div>
                     </div>
+                    <span class="pull-left text-light" style="user-select:none;">
+                        {% if reg_form.errors.username.0 %}
+                            {{ reg_form.errors.username.0 }}
+                        {% elif reg_form.errors.password_again.0 %}
+                            {{ reg_form.errors.password_again.0 }}
+                        {% else %}
+                            {{ reg_form.errors.email.0 }}
+                        {% endif %}
+                    </span>
                 </form>
             </div>
         </div>
@@ -59,4 +67,5 @@
     </center>
 </div>
 </body>
+
 </html>

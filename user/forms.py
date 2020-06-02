@@ -22,9 +22,10 @@ class LoginForm(forms.Form):
 
 
 class RegForm(forms.Form):
-	username = forms.CharField(max_length=30, min_length=3,
+	username = forms.CharField(max_length=30, min_length=3, required=False,
 	                           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入用户名!'}))
-	email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '请输如邮箱地址!'}))
+	email = forms.EmailField(required=False,
+	                         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '请输入邮箱地址!'}))
 	password = forms.CharField(min_length=6,
 	                           widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '请输入密码!'}))
 	password_again = forms.CharField(min_length=6, widget=forms.PasswordInput(
@@ -37,6 +38,8 @@ class RegForm(forms.Form):
 	def clean_username(self):
 		"""验证用户名"""
 		username = self.cleaned_data['username']
+		if not username:
+			raise forms.ValidationError('请输入用户名！')
 		if User.objects.filter(username=username).exists():
 			raise forms.ValidationError('用户名已存在!')
 		return username
@@ -44,6 +47,8 @@ class RegForm(forms.Form):
 	def clean_email(self):
 		"""验证邮箱"""
 		email = self.cleaned_data['email']
+		if not email:
+			raise forms.ValidationError('请输入邮箱！')
 		if User.objects.filter(email=email).exists():
 			raise forms.ValidationError('邮箱已存在!')
 		return email
@@ -55,6 +60,7 @@ class RegForm(forms.Form):
 		if password != password_again:
 			raise forms.ValidationError('两次密码不一致!')
 		return password_again
+
 
 class ChangAlias(forms.Form):
 	username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入用户名'}))

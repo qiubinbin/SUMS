@@ -19,19 +19,20 @@ def login(request):
 	else:
 		login_form = LoginForm()
 	context['login_form'] = login_form
+	print(login_form)
 	return render(request, 'login.html', context)
 
 
-def login4ui(request):
-	"""界面登录"""
-	username = request.POST['username']
-	password = request.POST['password']
-	user = auth.authenticate(request, username=username, password=password)
-	if user is not None:
-		auth.login(request, user)
-		return render(request, 'home.html')
-	else:
-		return render(request, 'login.html', {'message': "用户名或密码不正确！"})
+# def login4ui(request):
+# 	"""界面登录"""
+# 	username = request.POST['username']
+# 	password = request.POST['password']
+# 	user = auth.authenticate(request, username=username, password=password)
+# 	if user is not None:
+# 		auth.login(request, user)
+# 		return render(request, 'home.html')
+# 	else:
+# 		return render(request, 'login.html', {'message': "用户名或密码不正确！"})
 
 
 def logout(request):

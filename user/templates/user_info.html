@@ -9,8 +9,8 @@
 				{% if user.is_authenticated %}
 					<h3>{{ user.username }}</h3>
 					<ul class="fa-ul">
-						<li><i class="fa-li fa fa-user"></i>用户名：<a href="#">修改用户名</a></li>
-						<li><i class="fa-li fa fa-user-o"></i>别名：{{ user.alias }}</li>
+						<li><i class="fa-li fa fa-user"></i>用户名：{{ user.username }}</li>
+						<li><i class="fa-li fa fa-user-o"></i>别名：<a  href="{% url 'change_alias' %}.?from={{ request.get_full_path }}" class="text-info">{{ user.alias }}</a></li>
 						<li><i class="fa-li fa fa-envelope"></i>邮箱：{% if user.email %}{{ user.email }}{% else %}未设置邮箱{% endif %}
 							<a href="#">设置邮箱</a></li>
 						<li><i class="fa-li fa fa-clock-o"></i>上次登录时间：{{ user.last_login|date:"Y-m-d H:i:s" }}</li>
@@ -25,4 +25,38 @@
 			</div>
 		</div>
 	</div>
+<!--{# Medal窗 #}-->
+<!--<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="Modal2" role="dialog"-->
+<!--     tabindex="-1">-->
+<!--    <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="Modal1Label">修改别名</h5>-->
+<!--                <button aria-label="Close" class="close" data-dismiss="modal" type="button">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <form action="{% url 'change_alias' %}" method="post">-->
+<!--                    {% csrf_token %}-->
+<!--                    <div class="form-group" id="new_note">-->
+<!--                        <div class="input-group mb-3 form-group">-->
+<!--                            <div class="input-group-prepend">-->
+<!--                                <span class="input-group-text">新的别名</span>-->
+<!--                            </div>-->
+<!--                            <input aria-describedby="inputGroup-sizing-default" aria-label="Default" class="form-control"-->
+<!--                                   id="iname" name="iname" type="text">-->
+<!--                        </div>-->
+<!--                        <span class="pull-left text-danger">{{ form.errors.alias_new.0 }}</span>-->
+<!--                        <div class="input-group modal-footer mb-3 form-group">-->
+<!--                            <button class="btn btn-secondary btn-danger" data-dismiss="modal" type="button">关闭</button>-->
+<!--                            <button class="btn btn-primary btn-success" type="submit" >提交</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
 {% endblock %}

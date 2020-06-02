@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .forms import LoginForm, RegForm
+from .forms import LoginForm, RegForm, ChangAlias
 
 User = get_user_model()
 
@@ -65,3 +65,20 @@ def register(request):
 def user_info(request):
 	context = {}
 	return render(request, 'user_info.html', context)
+
+
+def change_alias(request):
+	redirect_to = request.GET.get('from', reverse('home'))
+	if request.method == 'POST':
+		form = ChangAlias(request.POST, user=request.user)
+		if form.is_valid():
+			alias_new = form.cleaned_data['alias_new']
+			user, _ = User.objects.get_or_create(username=request.user)
+			user.alias = alias_new
+			user.save()
+			return redirect(redirect_to)
+	else:
+		form = ChangAlias()
+	context = {}
+	context['form'] = form
+	return render(request, 'change_alias.html', context)

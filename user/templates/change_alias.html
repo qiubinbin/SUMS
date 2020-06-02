@@ -1,0 +1,41 @@
+{% load static %}<!--使用static-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改别名</title>
+    <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="{% static 'qiubin/login.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <center>
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="">
+                        <h4 class="card-title text-center" style="color:white;margin-bottom:40px;user-select:none;">修改别名</h4>
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><li class="fa fa-user-o fa-lg fa-fw"></li></span>
+                          </div>
+                          <input name="alias_new" type="text" class="form-control" placeholder="新的别名" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <span class="pull-left text-danger">{{ form.non_field_errors.0 }}</span>
+                        <div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">
+                          <div class="btn-group" role="group" aria-label="Third group">
+                            <button type="submit" class="btn btn-success ">修改</button>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </center>
+</div>
+</body>
+</html>

@@ -10,10 +10,10 @@ User = get_user_model()
 class UserAdmin(BaseUserAdmin):
 	fieldsets = (
 		(None, {'fields': ('username', 'password')}),
-		(_('Personal info'), {'fields': ('alias', 'department', 'email')}),
+		(_('Personal info'), {'fields': ('alias', 'c_time', 'email')}),
 		(_('Permissions'), {
 			'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
 		}),
 		(_('Important dates'), {'fields': ('last_login', 'date_joined')}),
 	)
-	list_display = ('username', 'department', 'email', 'alias', 'is_staff', 'is_active', 'is_superuser')
+	list_display = ('username', 'email', 'alias', 'c_time', 'is_staff', 'is_active', 'is_superuser')

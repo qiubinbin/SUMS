@@ -14,6 +14,7 @@
             <div class="card">
                 <h3>{{ note.title }}</h3>
                 <p>{{ note.content|safe }}</p>
+                <p>版本：{{ note.version }}</p>
                 <p>负责人：{{ note.author }}</p>
                 <p>升级时间：{{ note.time|date:"Y-m-d" }}</p>
                 <p>
@@ -23,7 +24,7 @@
                               d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
                               fill-rule="evenodd"/>
                     </svg>
-                    <a href="{% url 'notes_with_section' note.author.section.pk %}">{{ note.author.section }}</a></p>
+                    <a href="{% url 'notes_with_section' note.section.pk %}">{{ note.section }}</a></p>
                 <p>附件：<a download="{{ note.annex }}" href="{{note.annex.upload_to }}">{{ note.annex }}</a></p>
             </div>
             <div class="card">

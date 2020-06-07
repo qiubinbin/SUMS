@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from .forms import LoginForm, RegForm, ChangAlias
+from . import models
 
 User = get_user_model()
 
@@ -38,7 +39,7 @@ def login(request):
 def logout(request):
 	"""登出"""
 	auth.logout(request)
-	return redirect(request.GET.get('from', reverse('home')))
+	return redirect(reverse('home'))
 
 
 def register(request):
@@ -50,7 +51,7 @@ def register(request):
 			email = reg_form.cleaned_data['email']
 			password = reg_form.cleaned_data['password']
 			# 创建用户
-			user = User.objects.create_user(username, email, password)
+			user = User.objects.create_user(username=username, email=email, password=password)
 			user.save()
 			# 注册后登录
 			user = auth.authenticate(request, username=username, password=password)

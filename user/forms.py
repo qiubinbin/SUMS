@@ -26,9 +26,9 @@ class RegForm(forms.Form):
 	                           widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入用户名!'}))
 	email = forms.EmailField(required=False,
 	                         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '请输入邮箱地址!'}))
-	password = forms.CharField(min_length=6,
+	password = forms.CharField(min_length=5,
 	                           widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '请输入密码!'}))
-	password_again = forms.CharField(min_length=6, widget=forms.PasswordInput(
+	password_again = forms.CharField(min_length=5, widget=forms.PasswordInput(
 		attrs={'class': 'form-control', 'placeholder': '请再次输入密码!'}))
 
 	"""验证需clean_开头:django的forms.py的运行顺序，

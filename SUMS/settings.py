@@ -153,6 +153,7 @@ CKEDITOR_CONFIGS = {
 		'removePlugins': 'elementspath',
 		'resize_enabled': False,
 	},
+	'default': {},
 }
 # 自定义参数
 EACH_PAGE_NOTES_NUMBER = 3  # 每页展示数量

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
@@ -8,14 +9,13 @@ from flow.forms import CommentForm
 from flow.models import Comment
 from . import models
 
+User = get_user_model()
+
 
 # Create your views here.
 
 def home(request):
 	return render(request, 'home.html')
-
-
-
 
 
 def note_list(request):
@@ -62,7 +62,7 @@ def notes_with_section(request, section_id):
 	context = {}
 	note_section = get_object_or_404(models.Section, pk=section_id)
 	# note_author=get_object_or_404(User,section_id)
-	notes_all_list = models.Note.objects.filter(author__section=note_section)  # 获取当前section下所有的note
+	notes_all_list = models.Note.objects.filter(section=note_section)  # 获取当前section下所有的note
 	paginator = Paginator(notes_all_list, settings.EACH_PAGE_NOTES_NUMBER)
 	page_num = request.GET.get('page', 1)  # 获取页面参数
 	page_of_notes = paginator.get_page(page_num)
@@ -115,12 +115,19 @@ def notes_with_date(request, year, month):
 
 
 def new_note(request):
-	new_title = request.POST.get('iname')
-	new_time = request.POST.get('itime')
-	new_content = request.POST.get('icontent', '')
-	new_author = get_object_or_404(models.Principal, name=request.user)
-	new_annex = request.POST.get('iannex')
-	new_note = models.Note(title=new_title, time=new_time, content=new_content, author=new_author, annex=new_annex)
-	new_note.save()
-	referer = request.META.get('HTTP_REFERER', reverse('home'))
-	return redirect(referer)
+	if request.method == 'POST':
+		new_title = request.POST.get('iname')
+		new_time = request.POST.get('itime')
+		new_content = request.POST.get('icontent', '')
+		new_author = get_object_or_404(User, name=request.user)
+		new_annex = request.POST.get('iannex')
+		new_version = request.POST.get('iversion')
+		new_note = models.Note(title=new_title, time=new_time, content=new_content, author=new_author, annex=new_annex,
+		                       version=new_version)
+		new_note.save()
+		referer = request.META.get('HTTP_REFERER', reverse('home'))
+		return redirect(referer)
+	notes_all_version = models.Note.objects.filter(author=request.user)
+	context = {}
+	context['notes_all_version'] = notes_all_version
+	return render(request, 'new_note.html', context)

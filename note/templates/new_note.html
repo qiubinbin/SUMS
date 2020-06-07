@@ -1,0 +1,80 @@
+{% extends 'base.html'  %}
+{% load static %}<!--使用static-->
+{% block title %}
+新建升级
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card">
+                <form action="{% url 'new_note' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group" id="new_note">
+                        <div class="input-group mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">升级名称</span>
+                            </div>
+                            <input aria-describedby="inputGroup-sizing-default" aria-label="Default"
+                                   class="form-control"
+                                   id="iname" name="iname" type="text">
+                        </div>
+                        <div class="input-group mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">升级时间</span>
+                            </div>
+                            <input aria-describedby="inputGroup-sizing-default" aria-label="Default"
+                                   class="form-control" id="itime"
+                                   name="itime" type="date">
+                        </div>
+                        <div class="input-group mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">升级版本</span>
+                            </div>
+                            <textarea aria-label="With textarea" class="form-control" id="iversion"
+                                      name="iversion"></textarea>
+                        </div>
+                        <div class="input-group mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">主要内容</span>
+                            </div>
+                            <textarea aria-label="With textarea" class="form-control" id="icontent"
+                                      name="icontent">
+                            </textarea>
+                        </div>
+                        <div class="input-group mb-3 form-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                       aria-describedby="inputGroupFileAddon01" name="iannex">
+                                <label class="custom-file-label" for="inputGroupFile01">选择文件</label>
+                            </div>
+                        </div>
+                        <div class="input-group modal-footer mb-3 form-group">
+                            <button class="btn btn-secondary btn-danger" data-dismiss="modal" type="button">关闭</button>
+                            <button class="btn btn-primary btn-success" type="submit">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">历史版本</h5>
+                    <ul class="fa-ul card-text" style="margin-left: 0;">
+                        {% for note in notes_all_version %}
+                        <li>
+                            <i class="fa fa-tag">
+                                <a href="{% url 'note_detail' note.pk %}">{{ note.title }} {{ note.version }}</a>
+                            </i>
+                        </li>
+                        {% empty %}
+                        <li>无记录！</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

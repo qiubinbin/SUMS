@@ -48,8 +48,8 @@ def note_detail(request, note_id):
 	note_content_type = ContentType.objects.get_for_model(note)
 	comments = Comment.objects.filter(content_type=note_content_type, object_id=note.pk, parent=None)
 	context['note'] = note
-	context['previous_note'] = models.Note.objects.filter(time__gt=note.time).last()  # 前一条
-	context['next_note'] = models.Note.objects.filter(time__lt=note.time).first()  # 后一条
+	context['previous_note'] = models.Note.objects.filter(time__lt=note.time).last()  # 前一条
+	context['next_note'] = models.Note.objects.filter(time__gt=note.time).first()  # 后一条
 	context['note_sections'] = models.Section.objects.all()
 	context['note_dates'] = models.Note.objects.dates('time', 'month', order='DESC')
 	context['comments'] = comments.order_by('-comment_time')
@@ -119,13 +119,18 @@ def new_note(request):
 		new_title = request.POST.get('iname')
 		new_time = request.POST.get('itime')
 		new_content = request.POST.get('icontent', '')
-		new_author = get_object_or_404(User, name=request.user)
+		new_author = get_object_or_404(User, username=request.user)
 		new_annex = request.POST.get('iannex')
 		new_version = request.POST.get('iversion')
+		if not models.Section.objects.filter(section=request.POST.get('isection').strip()):
+			new_section = models.Section(section=request.POST.get('isection').strip())
+		else:
+			new_section = models.Section.objects.filter(section=request.POST.get('isection').strip())[0]
 		new_note = models.Note(title=new_title, time=new_time, content=new_content, author=new_author, annex=new_annex,
-		                       version=new_version)
+		                       version=new_version, section=new_section)
 		new_note.save()
-		referer = request.META.get('HTTP_REFERER', reverse('home'))
+		index_ = models.Note.objects.filter(author=request.user).order_by('-pk')[0].pk
+		referer = reverse('note_detail', kwargs={'note_id': index_})
 		return redirect(referer)
 	notes_all_version = models.Note.objects.filter(author=request.user)
 	context = {}

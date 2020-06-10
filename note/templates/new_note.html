@@ -29,6 +29,14 @@
                         </div>
                         <div class="input-group mb-3 form-group">
                             <div class="input-group-prepend">
+                                <span class="input-group-text">升级部门</span>
+                            </div>
+                            <input aria-describedby="inputGroup-sizing-default" aria-label="Default"
+                                   class="form-control" id="isection"
+                                   name="isection" type="text">
+                        </div>
+                        <div class="input-group mb-3 form-group">
+                            <div class="input-group-prepend">
                                 <span class="input-group-text">升级版本</span>
                             </div>
                             <textarea aria-label="With textarea" class="form-control" id="iversion"
@@ -44,8 +52,7 @@
                         </div>
                         <div class="input-group mb-3 form-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01" name="iannex">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01" name="iannex" value="浏览文件"  onclick="$('#i-file').click();">
                                 <label class="custom-file-label" for="inputGroupFile01">选择文件</label>
                             </div>
                         </div>

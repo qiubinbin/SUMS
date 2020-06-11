@@ -25,11 +25,12 @@
                           </div>
                           <input name="alias_new" type="text" class="form-control" placeholder="新的别名" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
-                        <span class="pull-left text-danger">{{ form.non_field_errors.0 }}</span>
-                        <div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">
-                          <div class="btn-group" role="group" aria-label="Third group">
+                        <span class="pull-left text-danger">{{ form.errors.alias_new.0 }}</span>
+                        <div class="pull-right">
+                            <button class="btn btn-warning " type="button" onclick="window.location.href='{{ return_back_url }}'">
+                                  返回
+                            </button>
                             <button type="submit" class="btn btn-success ">修改</button>
-                          </div>
                         </div>
                     </form>
                 </div>

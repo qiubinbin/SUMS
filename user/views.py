@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from .forms import LoginForm, RegForm, ChangAlias
-from . import models
 
 User = get_user_model()
 
@@ -82,4 +81,5 @@ def change_alias(request):
 		form = ChangAlias()
 	context = {}
 	context['form'] = form
+	context['return_back_url'] = redirect_to
 	return render(request, 'change_alias.html', context)

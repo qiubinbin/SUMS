@@ -83,7 +83,7 @@
             <h3 class="comment-area-title">提交审批</h3>
             {% if user.is_authenticated %}
                 <form id="comment_form" action="{% url 'submit_comment' %}" method="post" style="overflow:hidden;">{# overflow:hidden form到父级#}
-                    <label>{{ user.username }}已登录</label>
+                    <label>{{ user.alias }}已登录</label>
                     <div id="reply_content_container" style="display: none;">
                     	<p>回复：</p>
                     	<div id="reply_content"></div>

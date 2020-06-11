@@ -116,14 +116,15 @@ def notes_with_date(request, year, month):
 
 def new_note(request):
 	if request.method == 'POST':
+		new_annex = request.POST.get('iannex')
 		new_title = request.POST.get('iname')
 		new_time = request.POST.get('itime')
 		new_content = request.POST.get('icontent', '')
 		new_author = get_object_or_404(User, username=request.user)
-		new_annex = request.POST.get('iannex')
 		new_version = request.POST.get('iversion')
 		if not models.Section.objects.filter(section=request.POST.get('isection').strip()):
 			new_section = models.Section(section=request.POST.get('isection').strip())
+			new_section.save()  # 没有则新建
 		else:
 			new_section = models.Section.objects.filter(section=request.POST.get('isection').strip())[0]
 		new_note = models.Note(title=new_title, time=new_time, content=new_content, author=new_author, annex=new_annex,

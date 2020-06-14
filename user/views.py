@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .forms import LoginForm, RegForm, ChangAlias
+from .forms import LoginForm, RegForm, ChangAlias, ChangEmail
 
 User = get_user_model()
 
@@ -83,3 +83,21 @@ def change_alias(request):
 	context['form'] = form
 	context['return_back_url'] = redirect_to
 	return render(request, 'change_alias.html', context)
+
+
+def change_email(request):
+	redirect_to = request.GET.get('from', reverse('home'))
+	if request.method == 'POST':
+		form = ChangEmail(request.POST, user=request.user)
+		if form.is_valid():
+			alias_new = form.cleaned_data['email_new']
+			user, _ = User.objects.get_or_create(username=request.user)
+			user.email = alias_new
+			user.save()
+			return redirect(redirect_to)
+	else:
+		form = ChangEmail()
+	context = {}
+	context['form'] = form
+	context['return_back_url'] = redirect_to
+	return render(request, 'change_email.html', context)

@@ -8,4 +8,5 @@ urlpatterns = [
 	re_path('register/', views.register, name='register'),
 	re_path('user_info/', views.user_info, name='user_info'),
 	re_path('change_alias/', views.change_alias, name='change_alias'),
+	re_path('change_email/', views.change_email, name='change_email'),
 ]

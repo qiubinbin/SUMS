@@ -87,3 +87,29 @@ class ChangAlias(forms.Form):
 		if alias_new == '':
 			raise forms.ValidationError('新的别名不能为空！')
 		return alias_new
+
+class ChangEmail(forms.Form):
+	email_new = forms.CharField(
+		label='新邮箱',
+		max_length=20,
+		widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入新邮箱'})
+	)
+
+	def __init__(self, *args, **kwargs):
+		if 'user' in kwargs:
+			self.user = kwargs.pop('user')
+		super().__init__(*args, **kwargs)
+
+	def clean(self):
+		"""判断登录"""
+		if self.user.is_authenticated:
+			self.cleaned_data['user'] = self.user
+		else:
+			raise forms.ValidationError('用户未登录！')
+		return self.cleaned_data
+
+	def clean_email_new(self):
+		email_new = self.cleaned_data.get('email_new', '').strip()
+		if email_new == '':
+			raise forms.ValidationError('新的邮箱不能为空！')
+		return email_new
